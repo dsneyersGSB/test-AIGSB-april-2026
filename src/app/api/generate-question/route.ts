@@ -30,8 +30,9 @@ export async function POST(request: Request) {
     return NextResponse.json(question);
   } catch (error) {
     console.error('Generate question error:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: 'Failed to generate question. Please try again.' },
+      { error: `Failed to generate question: ${message}` },
       { status: 500 }
     );
   }

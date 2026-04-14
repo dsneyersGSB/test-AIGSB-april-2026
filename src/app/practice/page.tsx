@@ -46,12 +46,13 @@ export default function PracticePage() {
           userProfile: profile || undefined,
         }),
       });
-      if (!res.ok) throw new Error('Failed to generate question');
-      const question: GeneratedQuestion = await res.json();
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to generate question');
+      const question: GeneratedQuestion = data;
       setCurrentQuestion(question);
       setUserAnswer('');
-    } catch {
-      setError('Failed to generate question. Please try again.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate question. Please try again.');
     } finally {
       setIsGenerating(false);
     }
